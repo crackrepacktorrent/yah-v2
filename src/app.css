@@ -132,9 +132,10 @@
     @apply border-border outline-ring/50;
   }
 
-  /* Responsive base font size - scales from 15px (mobile) to 18px (desktop) */
+  /* Responsive base font size - scales from 14px (mobile) to 20px (desktop)
+     Made more aggressive for noticeable scaling. If too much, we can add media queries to individual elements instead. */
   html {
-    font-size: clamp(15px, 14px + 0.25vw, 18px);
+    font-size: clamp(14px, 12px + 0.5vw, 20px);
   }
 
   /* Default body styles - overridable by custom_global_css */
@@ -149,7 +150,7 @@
   /* Global typography - can be overridden via custom_global_css in Storyblok */
   h1 {
     margin-top: 0;
-    font-size: 3rem;        /* 45-54px - scales with base (15-18px) */
+    font-size: 3rem;        /* 42-60px - scales with base (14-20px) */
     font-weight: 900;       /* font-black - strong presence */
     line-height: 1.2;
     margin-bottom: 2rem;    /* 32px - good spacing */
