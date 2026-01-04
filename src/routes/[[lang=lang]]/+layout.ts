@@ -2,6 +2,9 @@ import type { LayoutLoad } from "./$types";
 import { storyblokInit, apiPlugin, getStoryblokApi } from "@storyblok/svelte";
 import { getLanguage } from "$lib/lang";
 import { dev } from "$app/environment";
+
+// Use draft content in dev mode OR if explicitly enabled via environment variable
+const useDraft = dev || import.meta.env.VITE_STORYBLOK_USE_DRAFT === 'true';
 import Page from "$lib/components/Page.svelte";
 import Separator from "$lib/components/Separator.svelte";
 import Image from "$lib/components/Image.svelte";
@@ -53,7 +56,7 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
 
     const buildUrl = (slug: string) => {
       const url = new URL(`https://api.storyblok.com/v2/cdn/stories/${slug}`);
-      url.searchParams.set('version', dev ? 'draft' : 'published');
+      url.searchParams.set('version', useDraft ? 'draft' : 'published');
       url.searchParams.set('resolve_links', 'url');
       url.searchParams.set('language', lang);
       url.searchParams.set('fallback_lang', 'en');
