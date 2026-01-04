@@ -1,5 +1,6 @@
 import type { PageLoad } from "./$types";
 import { error } from "@sveltejs/kit";
+import { dev } from "$app/environment";
 
 export const load: PageLoad = async ({ parent, params, fetch }) => {
   const { storyblokApi, lang } = await parent();
@@ -9,7 +10,7 @@ export const load: PageLoad = async ({ parent, params, fetch }) => {
     // Use SvelteKit's fetch directly for better SSR support
     const token = import.meta.env.VITE_STORYBLOK_DELIVERY_API_TOKEN;
     const url = new URL(`https://api.storyblok.com/v2/cdn/stories/${slug}`);
-    url.searchParams.set('version', 'draft');
+    url.searchParams.set('version', dev ? 'draft' : 'published');
     url.searchParams.set('language', lang);
     url.searchParams.set('fallback_lang', 'en');
     url.searchParams.set('token', token);
