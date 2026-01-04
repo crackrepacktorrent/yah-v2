@@ -1,0 +1,73 @@
+<script lang="ts">
+  import "../../app.css";
+  import { StoryblokComponent } from "@storyblok/svelte";
+  import Header from "$lib/components/Header.svelte";
+  import type { LayoutData } from "./$types";
+  import { parse } from 'css-tree';
+
+  let { data, children }: { data: LayoutData; children: any } = $props();
+
+  let validatedCSS = $state('');
+  let cssError = $state('');
+
+  $effect(() => {
+    console.log('Custom CSS from Storyblok:', data.customCSS);
+
+    if (!data.customCSS || data.customCSS.trim() === '') {
+      validatedCSS = '';
+      cssError = '';
+      console.log('No custom CSS provided');
+      return;
+    }
+
+    try {
+      // Parse CSS to validate syntax
+      parse(data.customCSS);
+      validatedCSS = data.customCSS;
+      cssError = '';
+      console.log('Custom CSS validated successfully');
+      console.log('CSS being injected:', validatedCSS);
+    } catch (error: any) {
+      cssError = error.message;
+      validatedCSS = '';
+      console.error('Invalid CSS:', error.message);
+      console.error('CSS content:', data.customCSS);
+    }
+  });
+</script>
+
+<svelte:head>
+  {#if validatedCSS}
+    {@html `<style>${validatedCSS}</style>`}
+  {/if}
+</svelte:head>
+
+{#if cssError}
+  <div style="position: fixed; bottom: 1rem; right: 1rem; background: #ff4444; color: white; padding: 1rem; border-radius: 0.5rem; max-width: 400px; z-index: 9999; font-family: monospace; font-size: 0.875rem;">
+    <strong>Custom CSS Error:</strong><br/>
+    {cssError}
+  </div>
+{/if}
+
+<div class="layout-container m-auto px-6 pt-4 pb-2 flex flex-col">
+  <header>
+    <Header
+      header={data.header}
+      lang={data.lang}
+      dropdownCards={data.dropdownCards}
+    />
+  </header>
+  <main class="flex-1">
+    {@render children()}
+  </main>
+  {#if data.footer && data.footer.length > 0}
+    <StoryblokComponent blok={data.footer[0]} />
+  {/if}
+</div>
+
+<style>
+  .layout-container {
+    max-width: var(--layout-max-width, 1200px);
+    min-height: 100vh;
+  }
+</style>
