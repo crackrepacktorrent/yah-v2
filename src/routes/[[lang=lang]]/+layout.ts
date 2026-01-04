@@ -1,10 +1,7 @@
 import type { LayoutLoad } from "./$types";
 import { storyblokInit, apiPlugin, getStoryblokApi } from "@storyblok/svelte";
 import { getLanguage } from "$lib/lang";
-import { dev } from "$app/environment";
-
-// Use draft content in dev mode OR if explicitly enabled via environment variable
-const useDraft = dev || import.meta.env.VITE_STORYBLOK_USE_DRAFT === 'true';
+import { getStoryblokVersion, shouldEnableBridge } from "$lib/utils/storyblok-helpers";
 import Page from "$lib/components/Page.svelte";
 import Separator from "$lib/components/Separator.svelte";
 import Image from "$lib/components/Image.svelte";
@@ -20,8 +17,9 @@ import Button from "$lib/components/Button.svelte";
 import Footer from "$lib/components/Footer.svelte";
 
 storyblokInit({
-  accessToken: import.meta.env.VITE_STORYBLOK_DELIVERY_API_TOKEN,
+  accessToken: import.meta.env.VITE_STORYBLOK_TOKEN,
   use: [apiPlugin],
+  bridge: shouldEnableBridge(),
   components: {
     page: Page as any,
     separator: Separator as any,
@@ -52,11 +50,12 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
   const storyblokApi = getStoryblokApi();
 
   try {
-    const token = import.meta.env.VITE_STORYBLOK_DELIVERY_API_TOKEN;
+    const token = import.meta.env.VITE_STORYBLOK_TOKEN;
+    const version = getStoryblokVersion();
 
     const buildUrl = (slug: string) => {
       const url = new URL(`https://api.storyblok.com/v2/cdn/stories/${slug}`);
-      url.searchParams.set('version', useDraft ? 'draft' : 'published');
+      url.searchParams.set('version', version);
       url.searchParams.set('resolve_links', 'url');
       url.searchParams.set('language', lang);
       url.searchParams.set('fallback_lang', 'en');
