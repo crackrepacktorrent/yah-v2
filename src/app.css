@@ -236,4 +236,11 @@
     color: inherit;
     text-decoration: underline;
   }
+
+  /* Mobile typography adjustments */
+  @media (max-width: 640px) {
+    h1 {
+      font-size: 2.5rem;  /* ~30-35px on mobile, reduced from 3rem for better fit */
+    }
+  }
 }
