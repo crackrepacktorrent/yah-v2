@@ -54,7 +54,9 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
     const version = getStoryblokVersion();
 
     const buildUrl = (slug: string) => {
-      const url = new URL(`https://api.storyblok.com/v2/cdn/stories/${slug}`);
+      // Strip leading slash to avoid double slashes in URL
+      const cleanSlug = slug.startsWith('/') ? slug.slice(1) : slug;
+      const url = new URL(`https://api.storyblok.com/v2/cdn/stories/${cleanSlug}`);
       url.searchParams.set('version', version);
       url.searchParams.set('resolve_links', 'url');
       url.searchParams.set('language', lang);
@@ -72,10 +74,23 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
     const config = dataConfig.story?.content;
     const header = config?.header ?? [];
 
+    // Helper to strip language prefix from slugs (for field-level translation)
+    const stripLangPrefix = (slug: string) => {
+      const withoutSlash = slug.startsWith("/") ? slug.slice(1) : slug;
+      if (withoutSlash.startsWith("en/") || withoutSlash.startsWith("es/")) {
+        return withoutSlash.slice(3);
+      }
+      return withoutSlash;
+    };
+
     // Find which pages are referenced by buttons for dropdowns
+    // Strip language prefixes - field-level translation uses single story with language parameter
     const dropdownPageSlugs = header
       .filter((btn: any) => btn.dropdown_source_page)
-      .map((btn: any) => btn.dropdown_source_page?.cached_url || btn.dropdown_source_page?.url || '')
+      .map((btn: any) => {
+        const slug = btn.dropdown_source_page?.cached_url || btn.dropdown_source_page?.url || '';
+        return stripLangPrefix(slug);
+      })
       .filter((slug: string) => slug);
 
     const uniquePageSlugs = [...new Set(dropdownPageSlugs)] as string[];

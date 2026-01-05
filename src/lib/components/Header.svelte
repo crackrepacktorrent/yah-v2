@@ -53,16 +53,22 @@
     if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("mailto:") || url.startsWith("tel:")) {
       return url;
     }
-    // Internal URL - add language prefix
+    // Strip any existing language prefix, then add current language
+    const pathWithoutLang = getPathWithoutLang(url);
+
     if (lang === "en") {
-      return url.startsWith("/") ? url : `/${url}`;
+      return pathWithoutLang;
     }
-    return `/${lang}/${url}`.replace(/\/+/g, "/");
+    return `/${lang}${pathWithoutLang}`;
   }
 
   function getCards(button: any) {
     const slug = button.dropdown_source_page?.cached_url || button.dropdown_source_page?.url || '';
-    return slug ? dropdownCards[slug] || [] : [];
+    if (!slug) return [];
+
+    // Strip language prefix - cards are stored with base slug
+    const baseSlug = getPathWithoutLang(slug).slice(1); // Remove leading /
+    return dropdownCards[baseSlug] || [];
   }
 
   function shouldOpenInNewTab(button: any): boolean {
@@ -89,14 +95,21 @@
             <Dropdown
               items={cards.map(card => {
                 const url = card.link?.cached_url || card.link?.url || "#";
-                // Ensure internal links start with / to make them absolute
-                const absoluteUrl = url.startsWith('/') || url.startsWith('http') || url === '#' ? url : `/${url}`;
+                // Skip language prefix handling for external links and anchors
+                if (url.startsWith('http') || url === '#') {
+                  return {
+                    label: card.title,
+                    href: url,
+                    target: card.link?.target === '_blank' ? "_blank" : undefined,
+                    rel: card.link?.target === '_blank' ? "noopener noreferrer" : undefined
+                  };
+                }
+                // Strip any existing language prefix, then add current language
+                const pathWithoutLang = getPathWithoutLang(url);
                 const cardOpenInNewTab = card.link?.target === '_blank';
                 return {
                   label: card.title,
-                  href: lang === "en"
-                    ? absoluteUrl
-                    : `/${lang}${absoluteUrl}`.replace(/\/+/g, "/"),
+                  href: lang === "en" ? pathWithoutLang : `/${lang}${pathWithoutLang}`,
                   target: cardOpenInNewTab ? "_blank" : undefined,
                   rel: cardOpenInNewTab ? "noopener noreferrer" : undefined
                 };
@@ -232,10 +245,12 @@
                     <div class="mobile-dropdown-content">
                       {#each cards as card}
                         {@const url = card.link?.cached_url || card.link?.url || "#"}
-                        {@const absoluteUrl = url.startsWith('/') || url.startsWith('http') || url === '#' ? url : `/${url}`}
                         {@const cardOpenInNewTab = card.link?.target === '_blank'}
+                        {@const href = (url.startsWith('http') || url === '#')
+                          ? url
+                          : (lang === "en" ? getPathWithoutLang(url) : `/${lang}${getPathWithoutLang(url)}`)}
                         <a
-                          href={lang === "en" ? absoluteUrl : `/${lang}${absoluteUrl}`.replace(/\/+/g, "/")}
+                          href={href}
                           class="mobile-dropdown-item"
                           target={cardOpenInNewTab ? "_blank" : undefined}
                           rel={cardOpenInNewTab ? "noopener noreferrer" : undefined}
