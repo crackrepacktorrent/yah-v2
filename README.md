@@ -39,10 +39,6 @@ Two branches:
 
 Set env vars in Vercel for each environment.
 
-## Storyblok Setup
-
-See [STORYBLOK_SETUP_GUIDE.md](./STORYBLOK_SETUP_GUIDE.md) for component setup.
-
 ## Languages
 
 Site supports English (`/en`) and Spanish (`/es`). Default is English at `/`.
@@ -50,15 +46,3 @@ Site supports English (`/en`) and Spanish (`/es`). Default is English at `/`.
 ## Maintenance
 
 Dependabot runs weekly for minor updates. GitHub Actions creates maintenance reminder issues quarterly and yearly with automated version checking.
-
-## Guides
-
-- [STORYBLOK_SETUP_GUIDE.md](./STORYBLOK_SETUP_GUIDE.md) - Storyblok component setup
-- [SVELTEKIT_GUIDE.md](./SVELTEKIT_GUIDE.md) - SvelteKit patterns
-- [SVELTE_RUNES_GUIDE.md](./SVELTE_RUNES_GUIDE.md) - Svelte 5 runes
-
-## Type Check
-
-```bash
-npm run check
-```
