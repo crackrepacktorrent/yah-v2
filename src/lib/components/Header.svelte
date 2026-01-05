@@ -165,7 +165,7 @@
       <Menu class="h-9 w-9 text-yahrange" />
     </Sheet.Trigger>
 
-    <Sheet.Content side="right">
+    <Sheet.Content side="right" class="overflow-y-auto">
       <Sheet.Header class="sr-only">
         <Sheet.Title>Menu</Sheet.Title>
       </Sheet.Header>
