@@ -132,10 +132,10 @@
     @apply border-border outline-ring/50;
   }
 
-  /* Responsive base font size - scales from 12px (mobile) to 19px (desktop)
+  /* Responsive base font size - scales from 14px (mobile) to 19px (desktop)
      Made more aggressive for noticeable scaling. If too much, we can add media queries to individual elements instead. */
   html {
-    font-size: clamp(12px, 12px + 0.5vw, 19px);
+    font-size: clamp(14px, 12px + 0.5vw, 19px);
   }
 
   /* Default body styles - overridable by custom_global_css */
