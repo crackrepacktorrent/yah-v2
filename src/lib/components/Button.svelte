@@ -35,7 +35,6 @@
     cursor: pointer;
     border: 2px solid transparent;
     letter-spacing: 0.025em;
-    text-transform: uppercase;
     background-color: white;
     color: var(--color-yahrange);
   }
