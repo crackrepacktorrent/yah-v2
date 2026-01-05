@@ -15,6 +15,9 @@
   // Object fit mode - Controls how image fills its space
   const objectFit = blok.object_fit ?? (aspectRatio === 'natural' ? 'none' : 'cover');
 
+  // Object position - Controls which part of the image is visible when cropped
+  const objectPosition = blok.object_position ?? 'center';
+
   // Build container styles
   const containerStyles = aspectRatio !== 'natural'
     ? `aspect-ratio: ${aspectRatio};`
@@ -22,7 +25,8 @@
 
   // Build image styles
   const objectFitStyle = objectFit !== 'none' ? `object-fit: ${objectFit};` : '';
-  const imgStyles = objectFitStyle + (blok.img_custom_styles ? ` ${blok.img_custom_styles}` : '');
+  const objectPositionStyle = `object-position: ${objectPosition};`;
+  const imgStyles = objectFitStyle + objectPositionStyle + (blok.img_custom_styles ? ` ${blok.img_custom_styles}` : '');
 </script>
 
 <div

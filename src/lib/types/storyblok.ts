@@ -72,12 +72,26 @@ export type ObjectFitMode = 'none' | 'contain' | 'cover' | 'fill' | 'scale-down'
  */
 export type AspectRatio =
   | 'natural'  // Natural image size
-  | '1:1'      // Square
-  | '16:9'     // Landscape video
-  | '4:3'      // Standard photo
-  | '3:2'      // Common camera ratio
-  | '2:3'      // Portrait
-  | '21:9';    // Ultrawide
+  | '1/1'      // Square
+  | '16/9'     // Landscape video
+  | '4/3'      // Standard photo
+  | '3/2'      // Common camera ratio
+  | '2/3'      // Portrait
+  | '21/9';    // Ultrawide
+
+/**
+ * Object position for images - controls which part of the image is visible when cropped
+ */
+export type ObjectPosition =
+  | 'center'       // Center (default)
+  | 'top'          // Top center
+  | 'bottom'       // Bottom center
+  | 'left'         // Left center
+  | 'right'        // Right center
+  | 'top left'     // Top left corner
+  | 'top right'    // Top right corner
+  | 'bottom left'  // Bottom left corner
+  | 'bottom right';// Bottom right corner
 
 /**
  * Image component
@@ -91,6 +105,7 @@ export interface ImageBlok extends StoryblokBlok {
   clickable?: boolean;
   aspect_ratio?: AspectRatio;
   object_fit?: ObjectFitMode;
+  object_position?: ObjectPosition;
   img_custom_styles?: string;
 }
 
