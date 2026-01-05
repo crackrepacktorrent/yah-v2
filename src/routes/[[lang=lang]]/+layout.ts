@@ -54,9 +54,7 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
     const version = getStoryblokVersion();
 
     const buildUrl = (slug: string) => {
-      // Strip leading slash to avoid double slashes in URL
-      const cleanSlug = slug.startsWith('/') ? slug.slice(1) : slug;
-      const url = new URL(`https://api.storyblok.com/v2/cdn/stories/${cleanSlug}`);
+      const url = new URL(`https://api.storyblok.com/v2/cdn/stories/${slug}`);
       url.searchParams.set('version', version);
       url.searchParams.set('resolve_links', 'url');
       url.searchParams.set('language', lang);
