@@ -161,7 +161,7 @@
 
   <!-- Mobile Sheet menu -->
   <Sheet.Root>
-    <Sheet.Trigger class="lg:hidden rounded-lg bg-white p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-yahrange/50">
+    <Sheet.Trigger class="lg:hidden rounded-lg bg-white p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-yahrange/50" aria-label="Open navigation menu">
       <Menu class="h-9 w-9 text-yahrange" />
     </Sheet.Trigger>
 
