@@ -163,8 +163,7 @@ npm audit
 - [ ] Production site: https://www.y4h.org
 - [ ] Preview deployment: https://yah-git-preview-crackrepacktorrents-projects.vercel.app
 - [ ] Test main pages
-- [ ] Mobile view works`,
-              labels: ['maintenance', 'quarterly']
+- [ ] Mobile view works`
             });
 
   yearly-reminder:
@@ -433,6 +432,5 @@ npm audit fix
 - [ ] Mobile view works
 - [ ] Forms work
 - [ ] Images load
-- [ ] SEO meta tags correct`,
-              labels: ['maintenance', 'yearly', 'high-priority']
+- [ ] SEO meta tags correct`
             });
