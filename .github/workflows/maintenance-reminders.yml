@@ -89,84 +89,87 @@ jobs:
               majorUpdatesSection = '### No Major Updates Available\n\nAll packages are current.\n\n';
             }
 
+            const body = [
+              '## Quarterly Maintenance - Q' + quarter + ' ' + year,
+              '',
+              '---',
+              '',
+              majorUpdatesSection,
+              '---',
+              '',
+              '### Current Package Versions',
+              '',
+              '- Svelte: ' + currentVersions.svelte,
+              '- SvelteKit: ' + currentVersions.sveltekit,
+              '- Storyblok SDK: ' + currentVersions.storyblok,
+              '- Tailwind CSS: ' + currentVersions.tailwind,
+              '',
+              '---',
+              '',
+              '### Tasks',
+              '',
+              '#### Review Major Dependencies',
+              '',
+              'Check for major version updates:',
+              '',
+              '```bash',
+              'npm outdated',
+              '```',
+              '',
+              'For each major update:',
+              '1. Read changelog/release notes',
+              '2. Create test branch',
+              '3. Update package: `npm install [package]@latest`',
+              '4. Test locally: `npm run dev`',
+              '5. Test all pages',
+              '6. Commit and create PR if successful',
+              '',
+              'Key packages:',
+              '- [ ] SvelteKit: https://github.com/sveltejs/kit/releases',
+              '- [ ] Svelte: https://svelte.dev/blog',
+              '- [ ] Storyblok SDK: https://github.com/storyblok/storyblok-js/releases',
+              '- [ ] Tailwind CSS: https://tailwindcss.com/blog',
+              '',
+              '#### Content Audit',
+              '',
+              '- [ ] Remove outdated events/campaigns',
+              '- [ ] Update "Our Work" with recent projects',
+              '- [ ] Check page content is current',
+              '- [ ] Update resources page',
+              '- [ ] Verify links work',
+              '- [ ] Check copyright year',
+              '',
+              'Update in Storyblok: https://app.storyblok.com',
+              '',
+              '#### Performance Check',
+              '',
+              '- [ ] Run Lighthouse: https://pagespeed.web.dev/',
+              '- [ ] Check Core Web Vitals',
+              '- [ ] Test on mobile device',
+              '- [ ] Check image loading',
+              '',
+              '#### Security Check',
+              '',
+              '```bash',
+              'npm audit',
+              '```',
+              '',
+              '- [ ] No high/critical vulnerabilities',
+              '- [ ] Run `npm audit fix` if needed',
+              '',
+              '#### Verification',
+              '',
+              '- [ ] Production site: https://www.y4h.org',
+              '- [ ] Preview deployment: https://yah-git-preview-crackrepacktorrents-projects.vercel.app',
+              '- [ ] Test main pages',
+              '- [ ] Mobile view works'
+            ].join('\n');
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Quarterly Maintenance - Q${quarter} ${year}`,
-              body: `## Quarterly Maintenance - Q${quarter} ${year}
-
----
-
-${majorUpdatesSection}
-
----
-
-### Current Package Versions
-
-- Svelte: ${currentVersions.svelte}
-- SvelteKit: ${currentVersions.sveltekit}
-- Storyblok SDK: ${currentVersions.storyblok}
-- Tailwind CSS: ${currentVersions.tailwind}
-
----
-
-### Tasks
-
-#### Review Major Dependencies
-
-Check for major version updates:
-
-\`\`\`bash
-npm outdated
-\`\`\`
-
-For each major update:
-1. Read changelog/release notes
-2. Create test branch
-3. Update package: \`npm install [package]@latest\`
-4. Test locally: \`npm run dev\`
-5. Test all pages
-6. Commit and create PR if successful
-
-Key packages:
-- [ ] SvelteKit: https://github.com/sveltejs/kit/releases
-- [ ] Svelte: https://svelte.dev/blog
-- [ ] Storyblok SDK: https://github.com/storyblok/storyblok-js/releases
-- [ ] Tailwind CSS: https://tailwindcss.com/blog
-
-#### Content Audit
-
-- [ ] Remove outdated events/campaigns
-- [ ] Update "Our Work" with recent projects
-- [ ] Check page content is current
-- [ ] Update resources page
-- [ ] Verify links work
-- [ ] Check copyright year
-
-Update in Storyblok: https://app.storyblok.com
-
-#### Performance Check
-
-- [ ] Run Lighthouse: https://pagespeed.web.dev/
-- [ ] Check Core Web Vitals
-- [ ] Test on mobile device
-- [ ] Check image loading
-
-#### Security Check
-
-\`\`\`bash
-npm audit
-\`\`\`
-
-- [ ] No high/critical vulnerabilities
-- [ ] Run \`npm audit fix\` if needed
-
-#### Verification
-
-- [ ] Production site: https://www.y4h.org
-- [ ] Preview deployment: https://yah-git-preview-crackrepacktorrents-projects.vercel.app
-- [ ] Test main pages
-- [ ] Mobile view works`
+              title: 'Quarterly Maintenance - Q' + quarter + ' ' + year,
+              body: body
             });
 
   yearly-reminder:
@@ -299,141 +302,143 @@ npm audit
             }
             frameworkStatus += '\n';
 
+            const body = [
+              '## Annual Maintenance - ' + year,
+              '',
+              '---',
+              '',
+              updateSummary,
+              '---',
+              '',
+              frameworkStatus,
+              '---',
+              '',
+              '### Technology Stack Review',
+              '',
+              '#### SvelteKit',
+              '- [ ] Check current version: `npm list @sveltejs/kit`',
+              '- [ ] Check latest: https://github.com/sveltejs/kit/releases',
+              '- [ ] Read migration guides if major version available',
+              '- [ ] Test upgrade in branch if needed',
+              '',
+              '#### Svelte',
+              '- [ ] Check current version: `npm list svelte`',
+              '- [ ] Check latest: https://svelte.dev/blog',
+              '- [ ] Review new features',
+              '',
+              '#### Storyblok SDK',
+              '- [ ] Check current version: `npm list @storyblok/svelte`',
+              '- [ ] Check latest: https://github.com/storyblok/storyblok-js/releases',
+              '- [ ] Review new CMS features',
+              '',
+              '#### Other Dependencies',
+              '- [ ] Run: `npm outdated`',
+              '- [ ] Review packages >1 major version behind',
+              '- [ ] Plan upgrade strategy',
+              '',
+              '---',
+              '',
+              '### Documentation Update',
+              '',
+              '- [ ] README.md - Update setup instructions, tech stack versions',
+              '- [ ] STORYBLOK_SETUP_GUIDE.md - Verify component fields',
+              '- [ ] SVELTEKIT_GUIDE.md - Update examples',
+              '- [ ] SVELTE_RUNES_GUIDE.md - Add new patterns',
+              '- [ ] .env.example - Verify environment variables',
+              '',
+              '---',
+              '',
+              '### Performance Audit',
+              '',
+              '#### Lighthouse',
+              '- [ ] Run on https://pagespeed.web.dev/',
+              '- [ ] Test homepage',
+              '- [ ] Test 2-3 content pages',
+              '- [ ] Document scores',
+              '',
+              '#### Bundle Size',
+              '```bash',
+              'npm run build',
+              '```',
+              '',
+              '- [ ] Check total build size',
+              '- [ ] Identify large dependencies',
+              '- [ ] Remove unused packages',
+              '',
+              '#### Core Web Vitals',
+              '- [ ] LCP (Largest Contentful Paint) < 2.5s',
+              '- [ ] FID (First Input Delay) < 100ms',
+              '- [ ] CLS (Cumulative Layout Shift) < 0.1',
+              '',
+              '---',
+              '',
+              '### Backup Verification',
+              '',
+              '#### Code & Configuration',
+              '- [ ] GitHub repo accessible',
+              '- [ ] All branches pushed (main, preview)',
+              '- [ ] No uncommitted local changes',
+              '- [ ] Vercel connected to correct repo',
+              '',
+              '#### Storyblok Content',
+              '- [ ] Log in: https://app.storyblok.com',
+              '- [ ] Content > Settings > Backup',
+              '- [ ] Create manual backup (download JSON)',
+              '- [ ] Store backup securely',
+              '- [ ] Verify critical content present',
+              '',
+              '#### Environment Variables',
+              '- [ ] Document all Vercel environment variables',
+              '- [ ] Verify tokens valid',
+              '- [ ] Rotate Preview token if needed',
+              '- [ ] Confirm production uses Public token',
+              '',
+              '#### Access & Credentials',
+              '- [ ] GitHub access working',
+              '- [ ] Vercel access working',
+              '- [ ] Storyblok access working',
+              '- [ ] Domain registrar access working',
+              '',
+              '---',
+              '',
+              '### Security Review',
+              '',
+              '#### Dependency Security',
+              '```bash',
+              'npm audit',
+              'npm audit fix',
+              '```',
+              '',
+              '- [ ] No high/critical vulnerabilities',
+              '- [ ] Update vulnerable packages',
+              '',
+              '#### Access Review',
+              '- [ ] Review GitHub collaborators',
+              '- [ ] Review Vercel team members',
+              '- [ ] Review Storyblok users',
+              '- [ ] Remove unnecessary access',
+              '',
+              '#### Token Rotation',
+              '- [ ] Consider rotating Storyblok tokens',
+              '- [ ] Update in Vercel if rotated',
+              '',
+              '---',
+              '',
+              '### Final Verification',
+              '',
+              '- [ ] Tests pass locally',
+              '- [ ] Production deployment successful',
+              '- [ ] Preview deployment working',
+              '- [ ] Critical pages load',
+              '- [ ] Mobile view works',
+              '- [ ] Forms work',
+              '- [ ] Images load',
+              '- [ ] SEO meta tags correct'
+            ].join('\n');
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Annual Maintenance - ${year}`,
-              body: `## Annual Maintenance - ${year}
-
----
-
-${updateSummary}
-
----
-
-${frameworkStatus}
-
----
-
-### Technology Stack Review
-
-#### SvelteKit
-- [ ] Check current version: \`npm list @sveltejs/kit\`
-- [ ] Check latest: https://github.com/sveltejs/kit/releases
-- [ ] Read migration guides if major version available
-- [ ] Test upgrade in branch if needed
-
-#### Svelte
-- [ ] Check current version: \`npm list svelte\`
-- [ ] Check latest: https://svelte.dev/blog
-- [ ] Review new features
-
-#### Storyblok SDK
-- [ ] Check current version: \`npm list @storyblok/svelte\`
-- [ ] Check latest: https://github.com/storyblok/storyblok-js/releases
-- [ ] Review new CMS features
-
-#### Other Dependencies
-- [ ] Run: \`npm outdated\`
-- [ ] Review packages >1 major version behind
-- [ ] Plan upgrade strategy
-
----
-
-### Documentation Update
-
-- [ ] README.md - Update setup instructions, tech stack versions
-- [ ] STORYBLOK_SETUP_GUIDE.md - Verify component fields
-- [ ] SVELTEKIT_GUIDE.md - Update examples
-- [ ] SVELTE_RUNES_GUIDE.md - Add new patterns
-- [ ] .env.example - Verify environment variables
-
----
-
-### Performance Audit
-
-#### Lighthouse
-- [ ] Run on https://pagespeed.web.dev/
-- [ ] Test homepage
-- [ ] Test 2-3 content pages
-- [ ] Document scores
-
-#### Bundle Size
-\`\`\`bash
-npm run build
-\`\`\`
-
-- [ ] Check total build size
-- [ ] Identify large dependencies
-- [ ] Remove unused packages
-
-#### Core Web Vitals
-- [ ] LCP (Largest Contentful Paint) < 2.5s
-- [ ] FID (First Input Delay) < 100ms
-- [ ] CLS (Cumulative Layout Shift) < 0.1
-
----
-
-### Backup Verification
-
-#### Code & Configuration
-- [ ] GitHub repo accessible
-- [ ] All branches pushed (main, preview)
-- [ ] No uncommitted local changes
-- [ ] Vercel connected to correct repo
-
-#### Storyblok Content
-- [ ] Log in: https://app.storyblok.com
-- [ ] Content > Settings > Backup
-- [ ] Create manual backup (download JSON)
-- [ ] Store backup securely
-- [ ] Verify critical content present
-
-#### Environment Variables
-- [ ] Document all Vercel environment variables
-- [ ] Verify tokens valid
-- [ ] Rotate Preview token if needed
-- [ ] Confirm production uses Public token
-
-#### Access & Credentials
-- [ ] GitHub access working
-- [ ] Vercel access working
-- [ ] Storyblok access working
-- [ ] Domain registrar access working
-
----
-
-### Security Review
-
-#### Dependency Security
-\`\`\`bash
-npm audit
-npm audit fix
-\`\`\`
-
-- [ ] No high/critical vulnerabilities
-- [ ] Update vulnerable packages
-
-#### Access Review
-- [ ] Review GitHub collaborators
-- [ ] Review Vercel team members
-- [ ] Review Storyblok users
-- [ ] Remove unnecessary access
-
-#### Token Rotation
-- [ ] Consider rotating Storyblok tokens
-- [ ] Update in Vercel if rotated
-
----
-
-### Final Verification
-
-- [ ] Tests pass locally
-- [ ] Production deployment successful
-- [ ] Preview deployment working
-- [ ] Critical pages load
-- [ ] Mobile view works
-- [ ] Forms work
-- [ ] Images load
-- [ ] SEO meta tags correct`
+              title: 'Annual Maintenance - ' + year,
+              body: body
             });
