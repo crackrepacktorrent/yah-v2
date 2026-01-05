@@ -12,6 +12,8 @@ jobs:
   quarterly-reminder:
     runs-on: ubuntu-latest
     if: github.event.schedule == '0 9 1 4,7,10 *' || github.event_name == 'workflow_dispatch'
+    permissions:
+      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -175,6 +177,8 @@ jobs:
   yearly-reminder:
     runs-on: ubuntu-latest
     if: github.event.schedule == '0 9 1 1 *' || github.event_name == 'workflow_dispatch'
+    permissions:
+      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
