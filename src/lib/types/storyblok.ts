@@ -68,6 +68,18 @@ export interface TextSectionBlok extends StoryblokBlok {
 export type ObjectFitMode = 'none' | 'contain' | 'cover' | 'fill' | 'scale-down';
 
 /**
+ * Aspect ratio options for images
+ */
+export type AspectRatio =
+  | 'natural'  // Natural image size
+  | '1:1'      // Square
+  | '16:9'     // Landscape video
+  | '4:3'      // Standard photo
+  | '3:2'      // Common camera ratio
+  | '2:3'      // Portrait
+  | '21:9';    // Ultrawide
+
+/**
  * Image component
  */
 export interface ImageBlok extends StoryblokBlok {
@@ -77,6 +89,7 @@ export interface ImageBlok extends StoryblokBlok {
   caption?: string;
   lazy_loading?: boolean;
   clickable?: boolean;
+  aspect_ratio?: AspectRatio;
   object_fit?: ObjectFitMode;
   img_custom_styles?: string;
 }
@@ -154,7 +167,6 @@ export interface GridBlok extends StoryblokBlok {
   column_count?: number;
   custom_template?: string;
   gap?: string;
-  image_container_height?: string;
   equal_height_rows?: boolean;
 }
 
@@ -235,7 +247,6 @@ export interface CardBlok extends StoryblokBlok {
 
   // Image - Array of nested blocks (typically ImageBlok)
   image?: StoryblokBlok[];
-  image_height?: string;
 
   // Content
   title: string;

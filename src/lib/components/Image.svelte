@@ -9,10 +9,18 @@
   const loading = blok.lazy_loading ?? true ? 'lazy' : 'eager';
   const clickable = blok.clickable ?? false;
 
-  // Object fit mode - Controls photo scaling within frame
-  const objectFit = blok.object_fit ?? 'none';
+  // Aspect ratio - Controls image dimensions
+  const aspectRatio = blok.aspect_ratio ?? 'natural';
 
-  // Combine object_fit field with custom styles
+  // Object fit mode - Controls how image fills its space
+  const objectFit = blok.object_fit ?? (aspectRatio === 'natural' ? 'none' : 'cover');
+
+  // Build container styles
+  const containerStyles = aspectRatio !== 'natural'
+    ? `aspect-ratio: ${aspectRatio};`
+    : '';
+
+  // Build image styles
   const objectFitStyle = objectFit !== 'none' ? `object-fit: ${objectFit};` : '';
   const imgStyles = objectFitStyle + (blok.img_custom_styles ? ` ${blok.img_custom_styles}` : '');
 </script>
@@ -20,7 +28,8 @@
 <div
   use:storyblokEditable={blok}
   class="image-container"
-  style={blok.custom_styles ?? ""}
+  class:has-aspect-ratio={aspectRatio !== 'natural'}
+  style="{containerStyles} {blok.custom_styles ?? ''}"
 >
   {#if clickable}
     <a href={imageUrl} target="_blank" rel="noopener noreferrer" class="image-link">
@@ -46,12 +55,15 @@
 
 <style>
   .image-container {
-    /* Flexible by default - responds to parent constraints via CSS variables */
-    height: var(--image-container-height, auto);
-    width: var(--image-container-width, 100%);
-    display: var(--image-container-display, flex);
+    width: 100%;
+    display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  /* When aspect-ratio is set, container becomes a frame */
+  .image-container.has-aspect-ratio {
+    overflow: hidden;
   }
 
   .image-link {
@@ -68,6 +80,12 @@
     max-width: 100%;
     display: block;
     width: 100%;
+  }
+
+  /* Images with aspect-ratio fill their container */
+  .has-aspect-ratio img {
+    height: 100%;
+    object-fit: cover; /* Default, can be overridden by blok.object_fit */
   }
 
   .caption {

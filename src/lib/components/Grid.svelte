@@ -9,9 +9,8 @@
   const template = customTemplate || `repeat(${columnCount}, 1fr)`;
   const gap = blok.gap || '2rem';
   const equalHeightRows = blok.equal_height_rows ?? false;
-  const imageContainerHeight = blok.image_container_height || '';
 
-  const gridStyles = `grid-template-columns: ${template}; gap: ${gap};${equalHeightRows ? ' grid-auto-rows: 1fr;' : ''}${imageContainerHeight ? ` --image-container-height: ${imageContainerHeight};` : ''} ${blok.custom_styles ?? ''}`;
+  const gridStyles = `grid-template-columns: ${template}; gap: ${gap};${equalHeightRows ? ' grid-auto-rows: 1fr;' : ''} ${blok.custom_styles ?? ''}`;
 </script>
 
 <div
@@ -30,6 +29,7 @@
     width: 100%;
   }
 
+  /* Stack to single column on mobile */
   @media (max-width: 768px) {
     .grid-container {
       grid-template-columns: 1fr !important;

@@ -7,9 +7,7 @@
 
   const linkUrl = getLinkUrl(blok.link);
   const openInNewTab = blok.link?.target === '_blank';
-
   const linkText = blok.link_text ?? 'Learn More';
-  const imageHeight = blok.image_height ?? '220px';
 
   function formatDate(dateString: string): string {
     if (!dateString) return '';
@@ -30,7 +28,7 @@
   style={blok.custom_styles ?? ""}
 >
   {#if blok.image && blok.image.length > 0}
-    <div class="card-image" style="height: {imageHeight};">
+    <div class="card-image">
       <StoryblokComponent blok={blok.image[0]} />
     </div>
   {/if}
