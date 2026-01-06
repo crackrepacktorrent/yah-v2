@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { fly } from 'svelte/transition';
+
   interface DropdownItem {
     label: string;
     value?: string;
@@ -33,7 +35,7 @@
   </div>
 
   {#if isOpen}
-    <div class="dropdown-menu" role="menu">
+    <div class="dropdown-menu" role="menu" transition:fly={{ y: -10, duration: 200 }}>
       {#each items as item}
         {#if item.href}
           <a
