@@ -6,10 +6,10 @@
   let { blok }: { blok: FooterBlok } = $props();
 
   const defaultCopyright = `© ${new Date().getFullYear()} Youth Alliance for Housing`;
-  const copyrightText = blok.copyright_text?.trim() || defaultCopyright;
+  const copyrightText = $derived(blok.copyright_text?.trim() || defaultCopyright);
 </script>
 
-<footer use:storyblokEditable={blok} class="mt-8" style={blok.custom_styles ?? ""}>
+<footer use:storyblokEditable={blok} class="footer" style={blok.custom_styles ?? ""}>
   {#if blok.social_links && blok.social_links.length > 0}
     <nav class="flex flex-row justify-center mt-4 gap-2">
       {#each blok.social_links as link}
@@ -38,3 +38,9 @@
     {copyrightText}
   </div>
 </footer>
+
+<style>
+  .footer {
+    margin-top: 2rem;
+  }
+</style>

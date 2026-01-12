@@ -79,7 +79,7 @@
   }
 </script>
 
-<nav class="mb-8 flex items-center" style={blok.custom_styles ?? ""}>
+<nav class="header flex items-center" style={blok.custom_styles ?? ""}>
   <a href={lang === "en" ? "/" : `/${lang}`} class="logo mr-auto w-[12rem] transition-transform duration-300">
     <img src={logo} alt="Youth Alliance for Housing logo" />
   </a>
@@ -285,6 +285,10 @@
 </nav>
 
 <style lang="postcss">
+  .header {
+    margin-bottom: 2rem;
+  }
+
   .logo {
     transition-property: transform;
     transform: perspective(1px) translateZ(0);
