@@ -2,6 +2,7 @@ import type { LayoutLoad } from "./$types";
 import { storyblokInit, apiPlugin, getStoryblokApi } from "@storyblok/svelte";
 import { getLanguage } from "$lib/lang";
 import { getStoryblokVersion, shouldEnableBridge } from "$lib/utils/storyblok-helpers";
+import type { HeaderButtonBlok, CardBlok } from "$lib/types/storyblok";
 import Page from "$lib/components/Page.svelte";
 import Separator from "$lib/components/Separator.svelte";
 import Image from "$lib/components/Image.svelte";
@@ -70,7 +71,12 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
 
     const dataConfig = await configRes.json();
     const config = dataConfig.story?.content;
-    const header = config?.header ?? [];
+    const header = config?.header?.[0] ?? {
+      _uid: 'header',
+      component: 'header',
+      buttons: []
+    };
+    const buttons = header.buttons ?? [];
 
     // Helper to strip language prefix from slugs (for field-level translation)
     const stripLangPrefix = (slug: string) => {
@@ -83,10 +89,10 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
 
     // Find which pages are referenced by buttons for dropdowns
     // Strip language prefixes - field-level translation uses single story with language parameter
-    const dropdownPageSlugs = header
-      .filter((btn: any) => btn.dropdown_source_page)
-      .map((btn: any) => {
-        const slug = btn.dropdown_source_page?.cached_url || btn.dropdown_source_page?.url || '';
+    const dropdownPageSlugs = buttons
+      .filter((btn: HeaderButtonBlok) => btn.show_dropdown)
+      .map((btn: HeaderButtonBlok) => {
+        const slug = btn.link?.cached_url || btn.link?.url || '';
         return stripLangPrefix(slug);
       })
       .filter((slug: string) => slug);
@@ -94,7 +100,7 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
     const uniquePageSlugs = [...new Set(dropdownPageSlugs)] as string[];
 
     // Fetch only the pages that are actually referenced
-    const dropdownCards: Record<string, any[]> = {};
+    const dropdownCards: Record<string, CardBlok[]> = {};
 
     if (uniquePageSlugs.length > 0) {
       const pageResponses = await Promise.all(
@@ -144,7 +150,11 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
     return {
       storyblokApi,
       lang,
-      header: [],
+      header: {
+        _uid: 'header',
+        component: 'header',
+        buttons: []
+      },
       footer: null,
       customCSS: '',
       dropdownCards: {},

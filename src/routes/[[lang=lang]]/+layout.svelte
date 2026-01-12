@@ -52,7 +52,7 @@
 <div class="layout-container m-auto px-6 pt-4 pb-2 flex flex-col">
   <header>
     <Header
-      header={data.header}
+      blok={data.header}
       lang={data.lang}
       dropdownCards={data.dropdownCards}
     />

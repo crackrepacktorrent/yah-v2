@@ -329,3 +329,22 @@ export interface FooterBlok extends StoryblokBlok {
   social_links?: SocialLinkBlok[];
   copyright_text?: string;
 }
+
+/**
+ * Header button item
+ */
+export interface HeaderButtonBlok {
+  _uid: string;
+  text: string;
+  link: LinkField;
+  custom_styles?: string;
+  show_dropdown?: boolean;
+}
+
+/**
+ * Header component
+ */
+export interface HeaderBlok extends StoryblokBlok {
+  component: 'header';
+  buttons?: HeaderButtonBlok[];
+}

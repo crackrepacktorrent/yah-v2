@@ -1,8 +1,9 @@
 <script lang="ts">
   import { page } from "$app/state";
+  import { storyblokEditable } from "@storyblok/svelte";
   import { languages, type Language } from "$lib/lang";
+  import type { HeaderBlok, HeaderButtonBlok, CardBlok } from "$lib/types/storyblok";
   import * as Sheet from "$lib/components/ui/sheet";
-  import * as Accordion from "$lib/components/ui/accordion";
   import Dropdown from "$lib/components/Dropdown.svelte";
   import logo from "$lib/assets/logo.png";
   import Menu from "lucide-svelte/icons/menu";
@@ -11,16 +12,16 @@
   let expandedMobileItem = $state<string | null>(null);
 
   let {
-    header,
+    blok,
     lang,
     dropdownCards = {}
   }: {
-    header: any;
+    blok: HeaderBlok;
     lang: Language;
-    dropdownCards?: Record<string, any[]>;
+    dropdownCards?: Record<string, CardBlok[]>;
   } = $props();
 
-
+  const buttons = $derived(blok.buttons ?? []);
 
   function getPathWithoutLang(url: string): string {
     const pathname = url;
@@ -47,7 +48,7 @@
     }
   }
 
-  function getButtonHref(button: any): string {
+  function getButtonHref(button: HeaderButtonBlok): string {
     const url = button.link?.cached_url || button.link?.url || "#";
     // If external URL, return as-is
     if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("mailto:") || url.startsWith("tel:")) {
@@ -62,8 +63,10 @@
     return `/${lang}${pathWithoutLang}`;
   }
 
-  function getCards(button: any) {
-    const slug = button.dropdown_source_page?.cached_url || button.dropdown_source_page?.url || '';
+  function getCards(button: HeaderButtonBlok): CardBlok[] {
+    if (!button.show_dropdown) return [];
+
+    const slug = button.link?.cached_url || button.link?.url || '';
     if (!slug) return [];
 
     // Strip language prefix - cards are stored with base slug
@@ -71,12 +74,12 @@
     return dropdownCards[baseSlug] || [];
   }
 
-  function shouldOpenInNewTab(button: any): boolean {
+  function shouldOpenInNewTab(button: HeaderButtonBlok): boolean {
     return button.link?.target === '_blank';
   }
 </script>
 
-<nav class="mb-8 flex items-center">
+<nav class="mb-8 flex items-center" style={blok.custom_styles ?? ""}>
   <a href={lang === "en" ? "/" : `/${lang}`} class="logo mr-auto w-[12rem] transition-transform duration-300">
     <img src={logo} alt="Youth Alliance for Housing logo" />
   </a>
@@ -84,8 +87,8 @@
   <!-- Desktop menu -->
   <div class="horizontal-menu-wrapper relative hidden lg:block">
     <div class="horizontal-menu">
-      {#if header && header.length > 0}
-        {#each header as button}
+      {#if buttons.length > 0}
+        {#each buttons as button}
           {@const cards = getCards(button)}
           {@const hasDropdown = cards.length > 0}
           {@const openInNewTab = shouldOpenInNewTab(button)}
@@ -211,9 +214,9 @@
         </div>
 
         <!-- Nav links from Storyblok -->
-        {#if header && header.length > 0}
+        {#if buttons.length > 0}
           <div class="flex flex-col gap-1">
-            {#each header as button}
+            {#each buttons as button}
               {@const cards = getCards(button)}
               {@const hasDropdown = cards.length > 0}
               {@const isExpanded = expandedMobileItem === button._uid}
